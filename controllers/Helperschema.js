@@ -36,7 +36,13 @@ exports.getHelpcontentByUserId = (req, res) => {
 };
 
 exports.deleteHelperById = (req, res) => {
-  Helper.findByIdAndDelete({ seeker: req.seeker, _id: req.params.id })
+  Helper.findOneAndDelete({ seeker: req.seeker, _id: req.params.id })
+    .then((data) => res.json(data))
+    .catch((err) => res.json(err));
+};
+
+exports.editHelperById = (req, res) => {
+  Helper.findOneAndUpdate({ seeker: req.seeker, _id: req.params.id })
     .then((data) => res.json(data))
     .catch((err) => res.json(err));
 };
