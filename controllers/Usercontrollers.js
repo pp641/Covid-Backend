@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../valuekeys");
 exports.createnewUser = (req, res) => {
   const { firstname, lastname, email, dob, gender, password } = req.body;
-  //console.log(req.body);
+  console.log(req.body);
   if (!firstname || !email || !dob || !gender || !password) {
     return res.json({ message: "Please Fill All the Details" });
   }
@@ -44,12 +44,22 @@ exports.createnewUser = (req, res) => {
 
 exports.signIn = (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
+  console.log(email, password);
+  if (
+    email === "" ||
+    password === "" ||
+    email === undefined ||
+    password === undefined
+  ) {
+    console.log("no");
     return res.json({ error: "Please Enter Email or Password" });
   }
 
   User.findOne({ email })
     .then((data) => {
+      if (!data) {
+        return res.json({ error: "This Account Does not Exist" });
+      }
       if (data.password === password) {
         const token = jwt.sign({ _id: data._id }, JWT_SECRET, {
           expiresIn: "86400",
