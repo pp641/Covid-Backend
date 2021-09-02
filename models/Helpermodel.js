@@ -17,14 +17,8 @@ const HelperSchema = new mongoose.Schema(
       default: [],
     },
     seeker: {
-      type: ObjectId,
-      ref: "User",
+      type: [],
       required: true,
-    },
-    helper: {
-      type: Number,
-      required: true,
-      default: 0,
     },
   },
   { timestamps: true }

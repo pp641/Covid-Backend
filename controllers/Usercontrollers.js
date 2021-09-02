@@ -2,8 +2,9 @@ const User = require("../models/Usermodel");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../valuekeys");
 exports.createnewUser = (req, res) => {
-  const { firstname, lastname, email, dob, gender, password } = req.body;
-  console.log(req.body);
+  const { firstname, lastname, email, dob, gender, password } =
+    req.body.body.details;
+  console.log(req.body.body.details);
   if (!firstname || !email || !dob || !gender || !password) {
     return res.json({ message: "Please Fill All the Details" });
   }
@@ -27,24 +28,20 @@ exports.createnewUser = (req, res) => {
 
       Newuser.save()
         .then((data) => {
-          console.log("this is ", data);
           res.send(data);
         })
         .catch((err) => {
-          console.log("this is ", err);
-
           return res.send(err);
         });
     })
     .catch((err) => {
-      console.log("this is 2 ", err);
       return res.send(err);
     });
 };
 
 exports.signIn = (req, res) => {
-  const { email, password } = req.body;
-  console.log(email, password);
+  const { email, password } = req.body.body;
+  console.log(req.body);
   if (
     email === "" ||
     password === "" ||
@@ -62,7 +59,7 @@ exports.signIn = (req, res) => {
       }
       if (data.password === password) {
         const token = jwt.sign({ _id: data._id }, JWT_SECRET, {
-          expiresIn: "86400",
+          expiresIn: Date.now() + 9999,
         });
         const { _id, email } = data;
         res.json({ token, user: { _id, email } });
