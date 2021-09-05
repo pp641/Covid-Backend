@@ -71,3 +71,11 @@ exports.signIn = (req, res) => {
       res.json({ error: err });
     });
 };
+
+exports.getUserById = (req, res) => {
+  const { id } = req.params;
+
+  User.findById({ _id: id })
+    .then((data) => res.json(data))
+    .catch((err) => res.json(err));
+};

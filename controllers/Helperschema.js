@@ -5,6 +5,7 @@ exports.AddHelp = (req, res) => {
   const { description, amount, assets, helper } = req.body.body;
   console.log(req.seeker);
   const seeker = [
+    req.seeker._id,
     req.seeker.firstname,
     req.seeker.lastname,
     req.seeker.email,
@@ -44,13 +45,76 @@ exports.getHelpcontentByUserId = (req, res) => {
 };
 
 exports.deleteHelperById = (req, res) => {
-  Helper.findOneAndDelete({ seeker: req.seeker, _id: req.params.id })
+  Helper.findOneAndDelete({ _id: req.params.id })
     .then((data) => res.json(data))
     .catch((err) => res.json(err));
 };
 
 exports.editHelperById = (req, res) => {
-  Helper.findOneAndUpdate({ seeker: req.seeker, _id: req.params.id })
-    .then((data) => res.json(data))
+  // console.log(req.body);
+  const { description, amount, assets } = req.body.body;
+  console.log(description, amount, assets);
+  Helper.findByIdAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    { $set: req.body.body },
+    { new: true }
+  )
+    .then((data) => {
+      res.json(data);
+      console.log("th3e new daata", data);
+    })
     .catch((err) => res.json(err));
+};
+
+exports.likePost = (req, res) => {
+  console.log("liked called");
+  let ans = false;
+  console.log(req.body.body.data.likes);
+  //console.log(req.body.body.id);
+  if (req.body.body.data.likes.includes(req.body.body.id)) {
+    ans = true;
+  }
+
+  console.log(ans);
+
+  Helper.findByIdAndUpdate(
+    { _id: req.body.body.data._id },
+    {
+      $push: {
+        likes: req.body.body.id,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err));
+};
+
+exports.unlikePost = (req, res) => {
+  let ans = false;
+  console.log(req.body.body.data.likes);
+  //console.log(req.body.body.id);
+  if (req.body.body.data.likes.includes(req.body.body.id)) {
+    ans = true;
+  }
+
+  console.log(ans);
+
+  Helper.findByIdAndUpdate(
+    { _id: req.body.body.data._id },
+    {
+      $pull: {
+        likes: req.body.body.id,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .then((data) => res.json(data))
+    .catch((err) => console.log(err));
 };

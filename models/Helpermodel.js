@@ -20,6 +20,9 @@ const HelperSchema = new mongoose.Schema(
       type: [],
       required: true,
     },
+    likes: {
+      type: [String],
+    },
   },
   { timestamps: true }
 );
