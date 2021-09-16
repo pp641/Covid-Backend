@@ -5,12 +5,15 @@ const UserRoutes = require("./routes/UserRoutes");
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/covidproject", {
-    useCreateIndex: true,
-    useFindAndModify: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://helperDB:KtDKVEpk9W1409L0@cluster0.xlupw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    {
+      useCreateIndex: true,
+      useFindAndModify: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("Connected To The Mongodb Server");
   })
