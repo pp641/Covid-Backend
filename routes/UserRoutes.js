@@ -4,6 +4,7 @@ const {
   createnewUser,
   signIn,
   getUserById,
+  logIn,
 } = require("../controllers/Usercontrollers");
 const {
   AddHelp,
@@ -18,6 +19,7 @@ const { isLoggedIn } = require("../middlewares/Isloggedin");
 const Helper = require("../models/Helpermodel");
 
 router.post("/createuser", createnewUser);
+router.post("/logIn", logIn);
 router.get("/getuserbyid/:id", getUserById);
 router.post("/signin", signIn);
 router.post("/createhelp", isLoggedIn, AddHelp);
